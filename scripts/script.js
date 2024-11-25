@@ -1,3 +1,10 @@
+/*********************************************************************************
+ *
+ * Ce fichier contient toutes les fonctions nécessaires au fonctionnement du jeu.
+ *
+ *********************************************************************************/
+
+
 function afficherResultat(score, nbMots){
       // Afficher le score
       let spanScore = document.querySelector(".zoneScore span");
@@ -11,7 +18,19 @@ function afficherPropositions(proposition){
   zoneProposition.innerText = proposition;
 }
 
+/**
+ * Cette fonction construit et affiche l'email.
+ * @param {string} nom : le nom du joueur
+ * @param {string} email : l'email de la personne avec qui il veut partager son score
+ * @param {string} score : le score.
+ */
+function afficherEmail(nom, email, score) {
+  let mailto = `mailto:${email}?subject=Partage du score Azertype&body=Salut, je suis ${nom} et je viens de réaliser le score ${score} sur le site d'Azertype !`
+  location.href = mailto
+}
+
 function lancerJeu(){
+  initAddEventListenerPopup()
   let score = 0;
   let nbMots = 0;
   let i = 0;
@@ -52,6 +71,18 @@ function lancerJeu(){
       afficherPropositions(listeProposition[i])
     })
   }
+
+  let formNoValidate = document.querySelector('form');
+  formNoValidate.addEventListener("submit", (event) => {
+    event.preventDefault();
+    let nom = document.getElementById("nom").value;
+    let email = document.getElementById("email").value;
+
+    let scoreEmail = `${score} / ${i}`
+    afficherEmail(nom, email, scoreEmail)
+    console.log(nom, email);
+
+  })
 
   afficherResultat(score, i);
 
